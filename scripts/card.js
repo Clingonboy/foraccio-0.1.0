@@ -22,11 +22,13 @@ function createDeck(call) {
             jarOfPromise.push(
                 new Promise(resolve => {
                     let tempCard = new Card(y, x); // create card with value and seed
-                    tempCard.imgCard.src = createImgFileName(y, x);
+                    
                     tempCard.imgCard.addEventListener('load',
                         function () {
                             resolve(true);
                         });
+                    tempCard.imgCard.setAttribute('crossOrigin', 'anonymous');
+                    tempCard.imgCard.src = createImgFileName(y, x);
                     deck.push(tempCard);
                 })
             );
@@ -34,10 +36,7 @@ function createDeck(call) {
     }
 
     Promise.all(jarOfPromise).then(_ => {
-        //return new Promise((resolve, reject) => { // <--
         call(deck);
-        //   resolve({deck});
-        //});
     });
 } // end createDeck
 
