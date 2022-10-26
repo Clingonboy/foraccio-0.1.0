@@ -7,6 +7,10 @@ const btnSimula = document.getElementById("btn-simula")
 let cardsDeck;
 
 let gui = new Gui();
+gui._bottons = {
+    btnCarte: btnCarte,
+    btnSimula: btnSimula,
+}
 window.gui = gui; // <--
 
 // ---------- This is the entry point -----------------------------------------
@@ -34,10 +38,15 @@ createDeck(getCardsDeck);
 // ----------------------------------------------------------------------------
 // ----------------------------------------------------------------------------
 
-btnCarte.addEventListener('click', () => {
+
+
+// ------- TEST FUNCTION ----------//
+function generateTestCards() {
     gui.getPlayerCards(cardsDeck.splice(0,13));
     gui.drawCards(gui.playerCards);
-})
+}
+
+btnCarte.addEventListener('click', generateTestCards);
 
 btnSimula.addEventListener('click', () => {
     gui.drawAreaPleyRect();

@@ -4,6 +4,7 @@ import { checkClickOnCard, findSum, getCoordinateOfCardsCombination } from './ut
 class Gui {
     _mouseMove = null;
     _clickSelectCard = null;
+    _bottons = {};
     constructor() {
         this.canvas = document.getElementById("my-canvas");
         this.ctx = this.canvas.getContext('2d');
@@ -119,6 +120,8 @@ class Gui {
             this.heightTackableCards(positions);
             this.canvas.removeEventListener('mousemove', this._mouseMove);
             this.canvas.removeEventListener('click', this._clickSelectCard);
+            this._bottons.btnCarte.disabled = true;
+            this._bottons.btnSimula.disabled = true;
             // TODO aggiungere event listener per prendere le carte della cominazione
             // selezionata
         }
