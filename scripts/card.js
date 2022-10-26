@@ -27,7 +27,7 @@ function createDeck(call) {
                         function () {
                             resolve(true);
                         });
-                    tempCard.imgCard.setAttribute('crossOrigin', 'anonymous');
+                    tempCard.imgCard.setAttribute('crossOrigin', 'same-origin');
                     tempCard.imgCard.src = createImgFileName(y, x);
                     deck.push(tempCard);
                 })
