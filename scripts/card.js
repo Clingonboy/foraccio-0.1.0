@@ -41,7 +41,7 @@ function createDeck(call) {
 } // end createDeck
 
 function createImgFileName(val, seed, dir = "cardsImg") {
-    return "../" + dir + "/" + val.toString() + seed + ".jpg"
+    return "./" + dir + "/" + val.toString() + seed + ".jpg"
     // example "../cardsImg/1B.jpg"
 }
 
