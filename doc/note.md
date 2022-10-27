@@ -27,7 +27,15 @@ console.log(clone); // {a:1,b:2,c:3};
 
 ## Funzioni particolari
 
-Una funzione molto importante è quella per cercare tutte le possibili somme di carte
+``` findSum ``` Una funzione molto importante è quella per cercare tutte le possibili somme di carte
 che si possono prendere sul tavolo.
+Cercando ho trovato questa interessante discussione [link](https://stackoverflow.com/questions/4632322/finding-all-possible-combinations-of-numbers-to-reach-a-given-sum) 
 
-Iniziand a cercare ho trovato questa interessante discussione [link](https://stackoverflow.com/questions/4632322/finding-all-possible-combinations-of-numbers-to-reach-a-given-sum) 
+``` heightTackableCards ``` Questa funzione è molto interessante perchè deve avidenziare
+in modo diverso le diverse combinazioni di carte che un giocatore può prendere.
+All'interno di questa funzione sono presenti varie variabili:
++ ``` list ``` un array che contiene tanti array quante le possibili combinazioni. Ogni array
+nella lista contiene i valori delle carte della combinazione.
++ ``` positions ``` Un arrey che contiene tanti array quante le possibili combinazioni. Questa
+volta ogni arrei contiene tutti i punti di inserimento delle carte che fanno parte delle combinazioni.
+

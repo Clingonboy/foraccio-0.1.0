@@ -55,6 +55,7 @@ btnSimula.addEventListener('click', () => {
     gui.cardsOnTable.push(cardsDeck[27]);
     gui.cardsOnTable.push(cardsDeck[28]);
     gui.cardsOnTable.push(cardsDeck[29]);
+    gui.cardsOnTable.push(cardsDeck[30]);
     gui.drawCardsOnTable(gui.cardsOnTable);
     console.log(gui.cardsOnTable);
 })

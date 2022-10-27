@@ -116,6 +116,7 @@ class Gui {
         // in the next function we use that list to highlight the cards on the table
         let positions = getCoordinateOfCardsCombination(this.cardsOnTable, list);
         console.log(positions); // <--
+        console.log(list); // <--
         if (positions.length != 0) {
             this.heightTackableCards(positions);
             this.canvas.removeEventListener('mousemove', this._mouseMove);
@@ -130,12 +131,29 @@ class Gui {
         
     }
 
-    heightTackableCards(list) {
-        if (list.length === 1 & list[0].length === 1) {
-            let position = list[0][0];
+    heightTackableCards(listPos) {
+        if (listPos.length === 1 & listPos[0].length === 1) {
+            let position = listPos[0][0];
             // hightlight only one card
             this.ctx.fillStyle = Color.blu;
             this.ctx.fillRect(position.x, position.y, this.w, this.h);
+        }
+        if (listPos.length > 1) {
+            console.log(`${listPos.length} possibili combinazioni`); // <--
+            let nDivision = 0;
+            listPos.forEach(el => {
+                if (el.length > 1) nDivision += 1;
+            })
+            
+            listPos.forEach((el, index) =>{
+                if (el.length === 1) {
+                    this.ctx.fillStyle = Color.blu;
+                    this.ctx.fillRect(el[0].x, el[0].y, this.w, this.h);
+                    console.log(`posizione: ${index}`);
+                }
+            });
+            console.log(`n. divisioni = ${nDivision}`); // <--
+
         }
         // TODO finire con la parte che evidenzia più carte nelle
         // combinazioni
@@ -186,6 +204,10 @@ function getPosCardOnTable(n) {
     }
     if (n == 4) {
         return [{ x: 265, y: 200 }, { x: 320, y: 200 }, { x: 375, y: 200 }, { x: 430, y: 200 }];
+    }
+    if (n == 5) {
+        return [{ x: 265, y: 200 }, { x: 320, y: 200 }, { x: 375, y: 200 }, { x: 430, y: 200 },
+            { x: 485, y: 200 }];
     }
 }
 
