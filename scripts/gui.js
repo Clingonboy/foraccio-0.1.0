@@ -4,7 +4,7 @@ import { checkClickOnCard, findSum, getCoordinateOfCardsCombination } from './ut
 class Gui {
     _mouseMove = null;
     _clickSelectCard = null;
-    _bottons = {};
+    _bottons = {}; // botton are add in the main function
     constructor() {
         this.canvas = document.getElementById("my-canvas");
         this.ctx = this.canvas.getContext('2d');
@@ -16,6 +16,11 @@ class Gui {
         this.cardsOnTable = []; // array carte sul tavolo
         this.cardsOnTableHighlight = []; // non usata
         this.pleyerCardHighlight = null; // non usata
+        this.selectInfo = {
+            listOfPositions: null,
+            listOfValues: null,
+            numberOfDovision: null
+        };
     }
 
     init() {
@@ -111,10 +116,12 @@ class Gui {
         let list = [];
         if (clickedCard != null) {
             list = findSum(this.cardsOnTable, clickedCard.val);
+            this.selectInfo.listOfValues = list;
         }
         // with list we have the information of the grup card,
         // in the next function we use that list to highlight the cards on the table
         let positions = getCoordinateOfCardsCombination(this.cardsOnTable, list);
+        this.selectInfo.listOfPositions = positions;
         console.log(positions); // <--
         console.log(list); // <--
         if (positions.length != 0) {
@@ -128,7 +135,7 @@ class Gui {
         }
         // TODO se non ci sono combinazioni il click deve far giocare la carta
         // parte complessa da pensare bene.
-        
+
     }
 
     heightTackableCards(listPos) {
@@ -137,22 +144,45 @@ class Gui {
             // hightlight only one card
             this.ctx.fillStyle = Color.blu;
             this.ctx.fillRect(position.x, position.y, this.w, this.h);
+            this.selectInfo.numberOfDovision = 1;
+            console.log(this.selectInfo); // <--
         }
         if (listPos.length > 1) {
             console.log(`${listPos.length} possibili combinazioni`); // <--
             let nDivision = 0;
             listPos.forEach(el => {
-                if (el.length > 1) nDivision += 1;
+                if (el.length > 1) nDivision += 1; // add number for possible combination
             })
-            
-            listPos.forEach((el, index) =>{
-                if (el.length === 1) {
-                    this.ctx.fillStyle = Color.blu;
-                    this.ctx.fillRect(el[0].x, el[0].y, this.w, this.h);
-                    console.log(`posizione: ${index}`);
-                }
-            });
+            this.selectInfo.numberOfDovision = nDivision; 
+            // if division is 1 do not need area divisio, only two color
+            if (nDivision === 1) {
+                listPos.forEach((cardsPosGroup, index) => {
+                    // if (el.length === 1) {
+                    //     this.ctx.fillStyle = Color.blu;
+                    //     this.ctx.fillRect(el[0].x, el[0].y, this.w, this.h);
+                    //     console.log(`posizione: ${index}`);
+                    // }
+                    let color = Color[index];
+                    this.ctx.fillStyle = color;
+                    cardsPosGroup.forEach(c => {
+                        this.ctx.fillRect(c.x, c.y, this.w, this.h);
+                    });
+                });
+            }
+            // case with division > 1 need to divide the area for selection
+            if (nDivision > 1) {
+                let delta = this.h / nDivision;
+                listPos.forEach((cardsPosGroup, index) => {
+                    let color = Color[index];
+                    this.ctx.fillStyle = color;
+                    cardsPosGroup.forEach(c => {
+                        this.ctx.fillRect(c.x, c.y + index * delta, this.w, delta);
+                    });
+                })
+            }
+
             console.log(`n. divisioni = ${nDivision}`); // <--
+            console.log(this.selectInfo);
 
         }
         // TODO finire con la parte che evidenzia più carte nelle
@@ -207,7 +237,7 @@ function getPosCardOnTable(n) {
     }
     if (n == 5) {
         return [{ x: 265, y: 200 }, { x: 320, y: 200 }, { x: 375, y: 200 }, { x: 430, y: 200 },
-            { x: 485, y: 200 }];
+        { x: 485, y: 200 }];
     }
 }
 
