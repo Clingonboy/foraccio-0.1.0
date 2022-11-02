@@ -21,6 +21,7 @@ class Gui {
             listOfValues: null,
             numberOfDovision: null
         };
+        this.catchedCards = {};
     }
 
     init() {
@@ -106,9 +107,11 @@ class Gui {
     }
 
     /**
-     * function to select a card. On the select card an arrow will draw.
-     * If no dard on table red arrow , if cards on table red arrow
-     * the mouseMove hendler is remove. when arrow is pressed.
+     * Method to select a card. On the select card an arrow will draw.
+     * If no card on table red arrow , if cards on table blue arrow
+     * After selcet a cartd if there are cards cmbination on table
+     * the method "heightTackableCards" is call to highlight the possible
+     * combination. 
      */
     clickSelectCard(e) {
         console.log(`Click: x-> ${e.offsetX} y-> ${e.offsetY}`); // <--
@@ -130,8 +133,6 @@ class Gui {
             this.canvas.removeEventListener('click', this._clickSelectCard);
             this._bottons.btnCarte.disabled = true;
             this._bottons.btnSimula.disabled = true;
-            // TODO aggiungere event listener per prendere le carte della cominazione
-            // selezionata
         }
         // TODO se non ci sono combinazioni il click deve far giocare la carta
         // parte complessa da pensare bene.
@@ -166,7 +167,7 @@ class Gui {
                     this.ctx.font = `${delta * 0.6}px serif`;
                     this.ctx.textAlign = 'center';
                     this.ctx.textBaseline = 'middle';
-                    this.ctx.strokeStyle = 'black'
+                    this.ctx.strokeStyle = 'white'
                     cardsPosGroup.forEach(c => {
                         this.ctx.fillRect(c.x, c.y, this.w, this.h);
                         this.ctx.strokeText(
@@ -187,7 +188,7 @@ class Gui {
                     this.ctx.font = `${delta * 0.7}px serif`;
                     this.ctx.textAlign = 'center';
                     this.ctx.textBaseline = 'middle';
-                    this.ctx.strokeStyle = 'black'
+                    this.ctx.strokeStyle = 'white'
                     cardsPosGroup.forEach(c => {
                         this.ctx.fillRect(c.x, c.y + index * delta, this.w, delta);
                         this.ctx.strokeText(
@@ -204,8 +205,8 @@ class Gui {
             console.log(ALPHABET[0]); // <--
 
         }
-        // TODO finire con la parte che evidenzia più carte nelle
-        // combinazioni
+        // TODO add avent listener for click selection
+
     }
 
     drawArrowUp(xP, yP) {

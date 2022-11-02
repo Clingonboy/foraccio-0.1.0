@@ -44,6 +44,7 @@ createDeck(getCardsDeck);
 function generateTestCards() {
     gui.getPlayerCards(cardsDeck.splice(0,13));
     gui.drawCards(gui.playerCards);
+    btnCarte.disabled = true;
 }
 
 btnCarte.addEventListener('click', generateTestCards);
@@ -58,6 +59,7 @@ btnSimula.addEventListener('click', () => {
     gui.cardsOnTable.push(cardsDeck[30]);
     gui.drawCardsOnTable(gui.cardsOnTable);
     console.log(gui.cardsOnTable);
+    btnSimula.disabled = true;
 })
 
 function test() {
