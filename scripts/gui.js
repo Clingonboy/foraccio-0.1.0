@@ -1,5 +1,5 @@
 import { Color } from './color.js';
-import { checkClickOnCard, findSum, getCoordinateOfCardsCombination } from './utils.js';
+import { checkClickOnCard, findSum, getCoordinateOfCardsCombination, ALPHABET } from './utils.js';
 
 class Gui {
     _mouseMove = null;
@@ -155,17 +155,25 @@ class Gui {
             })
             this.selectInfo.numberOfDovision = nDivision; 
             // if division is 1 do not need area divisio, only two color
+            // I know there are some row of code wrate two time but I'm a noob :)
             if (nDivision === 1) {
+                let delta = this.h / nDivision;
                 listPos.forEach((cardsPosGroup, index) => {
-                    // if (el.length === 1) {
-                    //     this.ctx.fillStyle = Color.blu;
-                    //     this.ctx.fillRect(el[0].x, el[0].y, this.w, this.h);
-                    //     console.log(`posizione: ${index}`);
-                    // }
                     let color = Color[index];
                     this.ctx.fillStyle = color;
+                    let letter = ALPHABET[index];
+                    this.ctx.fillStyle = color;
+                    this.ctx.font = `${delta * 0.6}px serif`;
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+                    this.ctx.strokeStyle = 'black'
                     cardsPosGroup.forEach(c => {
                         this.ctx.fillRect(c.x, c.y, this.w, this.h);
+                        this.ctx.strokeText(
+                            letter,
+                            c.x + this.w / 2,
+                            c.y + delta / 2
+                            );
                     });
                 });
             }
@@ -174,15 +182,26 @@ class Gui {
                 let delta = this.h / nDivision;
                 listPos.forEach((cardsPosGroup, index) => {
                     let color = Color[index];
+                    let letter = ALPHABET[index];
                     this.ctx.fillStyle = color;
+                    this.ctx.font = `${delta * 0.7}px serif`;
+                    this.ctx.textAlign = 'center';
+                    this.ctx.textBaseline = 'middle';
+                    this.ctx.strokeStyle = 'black'
                     cardsPosGroup.forEach(c => {
                         this.ctx.fillRect(c.x, c.y + index * delta, this.w, delta);
+                        this.ctx.strokeText(
+                            letter,
+                            c.x + this.w / 2,
+                            c.y + index * delta + delta / 2
+                            );
                     });
                 })
             }
 
             console.log(`n. divisioni = ${nDivision}`); // <--
-            console.log(this.selectInfo);
+            console.log(this.selectInfo); // <--
+            console.log(ALPHABET[0]); // <--
 
         }
         // TODO finire con la parte che evidenzia più carte nelle

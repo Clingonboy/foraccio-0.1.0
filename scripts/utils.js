@@ -134,4 +134,6 @@ const tablePosition = {
     10: [],
 }
 
-export { checkClickOnCard, findSum, getCoordinateOfCardsCombination }
+const ALPHABET = ["A", "B", "C", "D", "E", "F", "G", "H"];
+
+export { checkClickOnCard, findSum, getCoordinateOfCardsCombination, ALPHABET }
