@@ -25,7 +25,6 @@ window.gui = gui; // <--
  * */
 function getCardsDeck(inp) {
     cardsDeck = inp;
-    console.log(cardsDeck);
     window.cc = cardsDeck; // <--
     btnCarte.disabled = false;
     btnSimula.disabled = false;
@@ -58,11 +57,9 @@ btnSimula.addEventListener('click', () => {
     gui.cardsOnTable.push(cardsDeck[29]);
     gui.cardsOnTable.push(cardsDeck[30]);
     gui.drawCardsOnTable(gui.cardsOnTable);
-    console.log(gui.cardsOnTable);
     btnSimula.disabled = true;
 })
 
 function test() {
     let aa = tackeCardByValue(cardsDeck, 1 , "S");
-    console.log(aa);
 }

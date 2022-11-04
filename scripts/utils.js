@@ -33,6 +33,8 @@ function getCoordinateOfCardsCombination (cards, combinations) {
 
 /**
  * This function check in which card player clicked
+ * and return a copy of the selected card, not a reference !!
+ * or null of no card is select
  * 
  * @param {Array.<Card>} cards 
  * @param {number} x 

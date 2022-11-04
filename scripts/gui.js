@@ -4,6 +4,7 @@ import { checkClickOnCard, findSum, getCoordinateOfCardsCombination, ALPHABET } 
 class Gui {
     _mouseMove = null;
     _clickSelectCard = null;
+    _clickCombination = null; // henbled binding for highlight cards click method
     _bottons = {}; // botton are add in the main function
     constructor() {
         this.canvas = document.getElementById("my-canvas");
@@ -12,11 +13,12 @@ class Gui {
         this.W = this.canvas.width;
         this.w = 50; // card width
         this.h = 100; // card height
-        this.playerCards = [];  // arrey carte del giocatore
+        this.playerCards = [];  // array carte del giocatore
         this.cardsOnTable = []; // array carte sul tavolo
         this.cardsOnTableHighlight = []; // non usata
         this.pleyerCardHighlight = null; // non usata
         this.selectInfo = {
+            reaperCard: null,
             listOfPositions: null,
             listOfValues: null,
             numberOfDovision: null
@@ -38,6 +40,8 @@ class Gui {
         }
     }
 
+    // the method draw the player card.
+    // and give to the cards recived the calculate x and y value
     drawCards(cardsToDraw) {
         let l = cardsToDraw.length;
         let gap = 5;
@@ -114,10 +118,10 @@ class Gui {
      * combination. 
      */
     clickSelectCard(e) {
-        console.log(`Click: x-> ${e.offsetX} y-> ${e.offsetY}`); // <--
         let clickedCard = checkClickOnCard(this.playerCards, e.offsetX, e.offsetY);
         let list = [];
         if (clickedCard != null) {
+            this.selectInfo.reaperCard = clickedCard; // add the selected card to this.selectInfo to be use later
             list = findSum(this.cardsOnTable, clickedCard.val);
             this.selectInfo.listOfValues = list;
         }
@@ -133,10 +137,15 @@ class Gui {
             this.canvas.removeEventListener('click', this._clickSelectCard);
             this._bottons.btnCarte.disabled = true;
             this._bottons.btnSimula.disabled = true;
+            return;
         }
         // TODO se non ci sono combinazioni il click deve far giocare la carta
         // parte complessa da pensare bene.
-
+        // si può eseguire il metodo click combination qui.
+        // click combination controlla se non ci sono combinazini ma solo una carta reaper
+        // giocherà direttamente la carta.  --- PARTE DA GESTIRE CON ATTENZIONE ----
+        this._clickCombination = this.clickCombination.bind(this);
+        this.canvas.addEventListener('click', this._clickCombination);
     }
 
     heightTackableCards(listPos) {
@@ -146,7 +155,6 @@ class Gui {
             this.ctx.fillStyle = Color.blu;
             this.ctx.fillRect(position.x, position.y, this.w, this.h);
             this.selectInfo.numberOfDovision = 1;
-            console.log(this.selectInfo); // <--
         }
         if (listPos.length > 1) {
             console.log(`${listPos.length} possibili combinazioni`); // <--
@@ -202,10 +210,42 @@ class Gui {
 
             console.log(`n. divisioni = ${nDivision}`); // <--
             console.log(this.selectInfo); // <--
-            console.log(ALPHABET[0]); // <--
 
         }
         // TODO add avent listener for click selection
+        this._clickCombination = this.clickCombination.bind(this);
+        this.canvas.addEventListener('click', this._clickCombination);
+
+    }
+
+    // this method hendle the click on the cards combination on table to tacke.
+    // use this.selectInfo for recive information about the existing combination on the table.
+    // after click save information about selecter dard to this.catchedCards.
+    // then trig the animation to take the cards.
+    // then send the message to "CONTROLLER" about catched cards
+    // then remove his oun avent listener.
+    clickCombination(e) {
+        console.log(this.selectInfo);
+        let x = e.offsetX;
+        let y = e.offsetY;
+        // case with no combination to take, only play the card on the table.
+        if (this.selectInfo.numberOfDovision === null) {
+            console.log('Selezionata carta senza prese dispobibili');
+            this.playerCards.forEach((card, index) => {
+                if ( x > card.x && x < (card.x + this.w) && y > card.y && y < (card.y + this.h) ) {
+                    console.log(`La carta ${card.val} di " ${card.seed} " verra giocata sul tavolo.`);
+                }
+            });
+
+            // here run the function for animate take cards.
+            return;
+        }
+        if (this.selectInfo.listOfValues.length > 0) {
+            console.log(`Hai selezionato una carta con ${this.selectInfo.listOfValues.length} possibili combinazioni.`);
+
+            // here run the function for animate play the single card on table.
+            return;
+        }
 
     }
 
