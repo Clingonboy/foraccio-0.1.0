@@ -144,6 +144,10 @@ class Gui {
         // si può eseguire il metodo click combination qui.
         // click combination controlla se non ci sono combinazini ma solo una carta reaper
         // giocherà direttamente la carta.  --- PARTE DA GESTIRE CON ATTENZIONE ----
+        this.canvas.removeEventListener('mousemove', this._mouseMove);
+        this.canvas.removeEventListener('click', this._clickSelectCard);
+        this._bottons.btnCarte.disabled = true;
+        this._bottons.btnSimula.disabled = true;
         this._clickCombination = this.clickCombination.bind(this);
         this.canvas.addEventListener('click', this._clickCombination);
     }
@@ -157,12 +161,11 @@ class Gui {
             this.selectInfo.numberOfDovision = 1;
         }
         if (listPos.length > 1) {
-            console.log(`${listPos.length} possibili combinazioni`); // <--
             let nDivision = 0;
             listPos.forEach(el => {
                 if (el.length > 1) nDivision += 1; // add number for possible combination
             })
-            this.selectInfo.numberOfDovision = nDivision; 
+            this.selectInfo.numberOfDovision = nDivision;
             // if division is 1 do not need area divisio, only two color
             // I know there are some row of code wrate two time but I'm a noob :)
             if (nDivision === 1) {
@@ -182,7 +185,7 @@ class Gui {
                             letter,
                             c.x + this.w / 2,
                             c.y + delta / 2
-                            );
+                        );
                     });
                 });
             }
@@ -203,14 +206,12 @@ class Gui {
                             letter,
                             c.x + this.w / 2,
                             c.y + index * delta + delta / 2
-                            );
+                        );
                     });
                 })
             }
 
-            console.log(`n. divisioni = ${nDivision}`); // <--
-            console.log(this.selectInfo); // <--
-
+            console.log(`click carta con combinazioni`); // <--
         }
         // TODO add avent listener for click selection
         this._clickCombination = this.clickCombination.bind(this);
@@ -229,22 +230,80 @@ class Gui {
         let x = e.offsetX;
         let y = e.offsetY;
         // case with no combination to take, only play the card on the table.
+        if (this.selectInfo.reaperCard.val === 1) {
+            console.log("Hai selezionato un asso");
+
+            return;
+        }
         if (this.selectInfo.numberOfDovision === null) {
             console.log('Selezionata carta senza prese dispobibili');
             this.playerCards.forEach((card, index) => {
-                if ( x > card.x && x < (card.x + this.w) && y > card.y && y < (card.y + this.h) ) {
+                if (x > card.x && x < (card.x + this.w) && y > card.y && y < (card.y + this.h)) {
                     console.log(`La carta ${card.val} di " ${card.seed} " verra giocata sul tavolo.`);
                 }
             });
 
-            // here run the function for animate take cards.
+            // here run the function for animate play the single card on table.
             return;
         }
         if (this.selectInfo.listOfValues.length > 0) {
             console.log(`Hai selezionato una carta con ${this.selectInfo.listOfValues.length} possibili combinazioni.`);
 
-            // here run the function for animate play the single card on table.
+            // here run the function for animate take cards.
+            this.clickTakeCards(x, y);
             return;
+        }
+
+    }
+
+    clickTakeCards(x, y) {
+        
+        let cardOnClick = null;
+        let combinationListValue = null;
+        let delta = null;
+
+        // define a card clicked
+        this.cardsOnTable.forEach((card, index) => {
+            if (x > card.x && x < (card.x + this.w) && y > card.y && y < (card.y + this.h)) {
+                cardOnClick = card;
+            }
+        });
+        if (cardOnClick === null) {
+            return;
+        }
+
+        // check which combinatin is click
+        delta = Math.floor(this.h / this.selectInfo.numberOfDovision);
+        console.log(Math.floor((y - cardOnClick.y) / delta)); // <--
+        // Now is necessary to handle two possibility: if division === 1 of if division > 1
+        // becouse they are different.
+        if (this.selectInfo.numberOfDovision === 1) {
+            let cardValue = cardOnClick.val;
+            // find the combination
+            this.selectInfo.listOfValues.forEach(list => {
+                if (list.includes(cardValue)) {
+                    combinationListValue = list;
+                    console.log(combinationListValue);
+                }
+            });
+            //------ test
+            let np = 100;
+            this.cardsOnTable.forEach(card => {
+                if (combinationListValue.includes(card.val)) {
+                    card.x = np;
+                    card.y = np;
+                    np += 100;
+                }
+            });
+            /// adesso bisogna toglierle dal tavolo, e disegnarle fuori
+            /// hanno gia le coordinate giuste
+            /// poi ridisegnare le carte sul tavolo, tien duro che ce la fai
+
+        }
+        // if division are more than 1
+        if (this.selectInfo.numberOfDovision > 1) {
+
+
         }
 
     }

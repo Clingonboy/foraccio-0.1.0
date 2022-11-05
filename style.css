@@ -5,3 +5,11 @@ html {
 #my-canvas {
     background: green;
 }
+
+h1 {
+    margin: 10px;
+}
+
+body {
+    margin: 0;
+}
