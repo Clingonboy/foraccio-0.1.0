@@ -286,7 +286,10 @@ class Gui {
                     console.log(combinationListValue);
                 }
             });
-            //------ test
+            if (combinationListValue === null) {
+                return;
+            }
+            //------ test to remove and refactoring ------
             let np = 20;
             this.cardsOnTable.forEach(card => {
                 if (combinationListValue.includes(card.val)) {
@@ -303,9 +306,21 @@ class Gui {
             });
             this.cardsOnTable = newTable;
             this.drawCardsOnTable(this.cardsOnTable);
+            this.playerCards = this.playerCards.filter(card => {
+                if (card.val !== this.selectInfo.reaperCard.val) {
+                    return card;
+                }
+            });
+            console.log(this.playerCards);
+            this.ctx.clearRect(0, 380, this.W, this.H - 380);
+            this.drawCards(this.playerCards);
             this.catchedCards.forEach(card => {
                 this.ctx.drawImage(card.imgCard, card.x, card.y, this.w, this.h);
             });
+            this.selectInfo.reaperCard.x = 50;
+            this.selectInfo.reaperCard.y = 120;
+            let tempC = this.selectInfo.reaperCard;
+            this.ctx.drawImage(tempC.imgCard, tempC.x, tempC.y, this.w, this.h);
             /// adesso bisogna toglierle dal tavolo, e disegnarle fuori
             /// hanno gia le coordinate giuste
             /// poi ridisegnare le carte sul tavolo, tien duro che ce la fai
