@@ -23,7 +23,7 @@ class Gui {
             listOfValues: null,
             numberOfDovision: null
         };
-        this.catchedCards = {};
+        this.catchedCards = [];
     }
 
     init() {
@@ -287,13 +287,24 @@ class Gui {
                 }
             });
             //------ test
-            let np = 100;
+            let np = 20;
             this.cardsOnTable.forEach(card => {
                 if (combinationListValue.includes(card.val)) {
                     card.x = np;
                     card.y = np;
-                    np += 100;
+                    np += 30;
+                    this.catchedCards.push(card);
                 }
+            });
+            let newTable = this.cardsOnTable.filter(card => {
+                if (!(combinationListValue.includes(card.val))) {
+                    return card;
+                }
+            });
+            this.cardsOnTable = newTable;
+            this.drawCardsOnTable(this.cardsOnTable);
+            this.catchedCards.forEach(card => {
+                this.ctx.drawImage(card.imgCard, card.x, card.y, this.w, this.h);
             });
             /// adesso bisogna toglierle dal tavolo, e disegnarle fuori
             /// hanno gia le coordinate giuste
