@@ -15,8 +15,6 @@ class Gui {
         this.h = 100; // card height
         this.playerCards = [];  // array carte del giocatore
         this.cardsOnTable = []; // array carte sul tavolo
-        this.cardsOnTableHighlight = []; // non usata
-        this.pleyerCardHighlight = null; // non usata
         this.selectInfo = {
             reaperCard: null,
             listOfPositions: null,
@@ -287,7 +285,7 @@ class Gui {
                 }
             });
             if (combinationListValue === null) {
-                return;
+                return; // exit from clickTakeCards if not find combination.
             }
             //------ test to remove and refactoring ------
             let np = 20;
@@ -324,6 +322,8 @@ class Gui {
             /// adesso bisogna toglierle dal tavolo, e disegnarle fuori
             /// hanno gia le coordinate giuste
             /// poi ridisegnare le carte sul tavolo, tien duro che ce la fai
+            // definire l'animazione
+            // mandare un messaggio al controller per informarlo della giocata
 
         }
         // if division are more than 1
@@ -332,6 +332,8 @@ class Gui {
 
         }
 
+        // remove eventlistener for this method.
+        // clean the state of the gui.
     }
 
     drawArrowUp(xP, yP) {
@@ -384,6 +386,11 @@ function getPosCardOnTable(n) {
         return [{ x: 265, y: 200 }, { x: 320, y: 200 }, { x: 375, y: 200 }, { x: 430, y: 200 },
         { x: 485, y: 200 }];
     }
+    if (n == 6) {
+        return [{ x: 265, y: 145 }, { x: 320, y: 145 }, { x: 375, y: 145 }, { x: 430, y: 145 },
+        { x: 485, y: 145 }, {x: 265, y: 250}];
+    }
+
 }
 
 export { Gui };
