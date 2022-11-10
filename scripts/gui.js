@@ -4,7 +4,7 @@ import { checkClickOnCard, findSum, getCoordinateOfCardsCombination, ALPHABET } 
 class Gui {
     _mouseMove = null;
     _clickSelectCard = null;
-    _clickCombination = null; // henbled binding for highlight cards click method
+    _clickCombination = null; // handler binding for highlight cards click method
     _buttons = {}; // buttons are add in the main function
     constructor() {
         this.canvas = document.getElementById("my-canvas");
@@ -13,13 +13,13 @@ class Gui {
         this.W = this.canvas.width;
         this.w = 50; // card width
         this.h = 100; // card height
-        this.playerCards = [];  // array carte del giocatore
-        this.cardsOnTable = []; // array carte sul tavolo
+        this.playerCards = [];  // array card of player
+        this.cardsOnTable = []; // array card of table
         this.selectInfo = {
             reaperCard: null,
             listOfPositions: null,
             listOfValues: null,
-            numberOfDovision: null
+            numberOfDivision: null
         };
         this.catchedCards = [];
     }
@@ -39,7 +39,7 @@ class Gui {
     }
 
     // the method draw the player card.
-    // and give to the cards recived the calculate x and y value
+    // and give to the cards received the calculate x and y value
     drawCards(cardsToDraw) {
         let l = cardsToDraw.length;
         let gap = 5;
@@ -85,7 +85,7 @@ class Gui {
 
     /**
      * handle the mouse movement over the cards before a card is select
-     * a red rectangle is drawing on the canrd woth mouse pointer over
+     * a red rectangle is drawing on the card with mouse pointer over
      * after a cards is select this listener function is remove from the event
      * listener
      */
@@ -111,7 +111,7 @@ class Gui {
     /**
      * Method to select a card. On the select card an arrow will draw.
      * If no card on table red arrow , if cards on table blue arrow
-     * After selcet a cartd if there are cards cmbination on table
+     * After select a cart if there are cards combination on table
      * the method "heightTackableCards" is call to highlight the possible
      * combination. 
      */
@@ -153,17 +153,17 @@ class Gui {
     heightTackableCards(listPos) {
         if (listPos.length === 1 & listPos[0].length === 1) {
             let position = listPos[0][0];
-            // hightlight only one card
+            // highlight only one card
             this.ctx.fillStyle = Color.blu;
             this.ctx.fillRect(position.x, position.y, this.w, this.h);
-            this.selectInfo.numberOfDovision = 1;
+            this.selectInfo.numberOfDivision = 1;
         }
         if (listPos.length > 1) {
             let nDivision = 0;
             listPos.forEach(el => {
                 if (el.length > 1) nDivision += 1; // add number for possible combination
             })
-            this.selectInfo.numberOfDovision = nDivision;
+            this.selectInfo.numberOfDivision = nDivision;
             // if division is 1 do not need area divisio, only two color
             // I know there are some row of code wrate two time but I'm a noob :)
             if (nDivision === 1) {
@@ -211,18 +211,18 @@ class Gui {
 
             console.log(`click carta con combinazioni`); // <--
         }
-        // TODO add avent listener for click selection
+        // TODO add event listener for click selection
         this._clickCombination = this.clickCombination.bind(this);
         this.canvas.addEventListener('click', this._clickCombination);
 
     }
 
-    // this method hendle the click on the cards combination on table to tacke.
-    // use this.selectInfo for recive information about the existing combination on the table.
-    // after click save information about selecter dard to this.catchedCards.
+    // this method heddle the click on the cards combination on table to take.
+    // use this.selectInfo for receive information about the existing combination on the table.
+    // after click save information about selected card to this.catchedCards.
     // then trig the animation to take the cards.
     // then send the message to "CONTROLLER" about catched cards
-    // then remove his oun avent listener.
+    // then remove his oun event listener.
     clickCombination(e) {
         console.log(this.selectInfo);
         let x = e.offsetX;
@@ -233,7 +233,7 @@ class Gui {
 
             return;
         }
-        if (this.selectInfo.numberOfDovision === null) {
+        if (this.selectInfo.numberOfDivision === null) {
             console.log('Selezionata carta senza prese dispobibili');
             this.playerCards.forEach((card, index) => {
                 if (x > card.x && x < (card.x + this.w) && y > card.y && y < (card.y + this.h)) {
@@ -271,11 +271,11 @@ class Gui {
         }
 
         // check which combinatin is click
-        delta = Math.floor(this.h / this.selectInfo.numberOfDovision);
+        delta = Math.floor(this.h / this.selectInfo.numberOfDivision);
         console.log(Math.floor((y - cardOnClick.y) / delta)); // <--
         // Now is necessary to handle two possibility: if division === 1 of if division > 1
         // becouse they are different.
-        if (this.selectInfo.numberOfDovision === 1) {
+        if (this.selectInfo.numberOfDivision === 1) {
             let cardValue = cardOnClick.val;
             // find the combination
             this.selectInfo.listOfValues.forEach(list => {
@@ -329,7 +329,7 @@ class Gui {
 
         }
         // if division are more than 1
-        if (this.selectInfo.numberOfDovision > 1) {
+        if (this.selectInfo.numberOfDivision > 1) {
 
 
         }
@@ -369,7 +369,7 @@ class Gui {
 
 /**
  * this function return an array of point for positioning cards on table
- * recive the number of cards and return an arrey with accordlyng number points
+ * receive the number of cards and return an array with according number points
  */
 function getPosCardOnTable(n) {
     if (n == 1) {
