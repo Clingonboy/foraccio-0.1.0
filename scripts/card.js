@@ -49,7 +49,7 @@ function createImgFileName(val, seed, dir = "cardsImg") {
  * This function remove the card with specific valeu from the dock
  * and return that card.
  */
-function tackeCardByValue(list, value, seed) {
+function takeCardByValue(list, value, seed) {
     let n = null;
     let card = null;
     for (let x = 0; x < list.length; x++) {
@@ -64,4 +64,4 @@ function tackeCardByValue(list, value, seed) {
     return card;
 }
 
-export { Card, createDeck, tackeCardByValue };
+export { Card, createDeck,  takeCardByValue };

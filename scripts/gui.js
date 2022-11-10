@@ -5,7 +5,7 @@ class Gui {
     _mouseMove = null;
     _clickSelectCard = null;
     _clickCombination = null; // henbled binding for highlight cards click method
-    _bottons = {}; // botton are add in the main function
+    _buttons = {}; // buttons are add in the main function
     constructor() {
         this.canvas = document.getElementById("my-canvas");
         this.ctx = this.canvas.getContext('2d');
@@ -74,7 +74,7 @@ class Gui {
      * this function draw a rectangle that show where the played cards
      * will be draw
      */
-    drawAreaPleyRect() {
+    drawAreaPlayRect() {
         this.ctx.beginPath();
         this.ctx.lineWidth = "1";
         this.ctx.strokeStyle = "black";
@@ -97,7 +97,7 @@ class Gui {
             if (x > card.x & x < (card.x + this.w) & y > card.y & y < (card.y + this.h)) {
                 this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
                 this.drawCards(this.playerCards);
-                this.drawAreaPleyRect();
+                this.drawAreaPlayRect();
                 this.ctx.beginPath();
                 this.ctx.lineWidth = "2";
                 this.ctx.strokeStyle = Color.blu;
@@ -133,8 +133,8 @@ class Gui {
             this.heightTackableCards(positions);
             this.canvas.removeEventListener('mousemove', this._mouseMove);
             this.canvas.removeEventListener('click', this._clickSelectCard);
-            this._bottons.btnCarte.disabled = true;
-            this._bottons.btnSimula.disabled = true;
+            this._buttons.btnCarte.disabled = true;
+            this._buttons.btnSimula.disabled = true;
             return;
         }
         // TODO se non ci sono combinazioni il click deve far giocare la carta
@@ -144,8 +144,8 @@ class Gui {
         // giocherà direttamente la carta.  --- PARTE DA GESTIRE CON ATTENZIONE ----
         this.canvas.removeEventListener('mousemove', this._mouseMove);
         this.canvas.removeEventListener('click', this._clickSelectCard);
-        this._bottons.btnCarte.disabled = true;
-        this._bottons.btnSimula.disabled = true;
+        this._buttons.btnCarte.disabled = true;
+        this._buttons.btnSimula.disabled = true;
         this._clickCombination = this.clickCombination.bind(this);
         this.canvas.addEventListener('click', this._clickCombination);
     }
@@ -306,6 +306,8 @@ class Gui {
             this.drawCardsOnTable(this.cardsOnTable);
             this.playerCards = this.playerCards.filter(card => {
                 if (card.val !== this.selectInfo.reaperCard.val) {
+                    return card;
+                } else if (card.seed !== this.selectInfo.reaperCard.seed) {
                     return card;
                 }
             });
